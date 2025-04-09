@@ -1,6 +1,7 @@
 import pygame
 import random
 
+
 class Ball():
     def __init__(self, x:int, y:int, radius=14, color="white"):
         self.x = x
@@ -12,16 +13,6 @@ class Ball():
         self.center = (self.radius,self.radius)
         self.velocity = pygame.Vector2(5*random.choice([-1,1]),5*random.choice([-1,1]))
         pygame.draw.circle(self.surface,self.color,self.center,self.radius)
-    
-    def move(self, keylist:list, upkey, downkey, leftkey, rightkey):
-        if keylist[upkey]:
-            self.rectangle.y -= self.velocity.y
-        if keylist[downkey]:
-            self.rectangle.y += self.velocity.y
-        if keylist[leftkey]:
-            self.rectangle.x -= self.velocity.x
-        if keylist[rightkey]:
-            self.rectangle.x += self.velocity.x
 
     def draw(self, screen):
         screen.blit(self.surface,self.rectangle)
@@ -53,7 +44,21 @@ class Ball():
         for paddleRect in paddleRects:
             if self.rectangle.colliderect(paddleRect) and paddleRect.x < screenWidth // 2:
                 print("collided with p1")
+                self.rectangle.left = paddleRect.right
                 self.velocity.x *= -1
+
             if self.rectangle.colliderect(paddleRect) and paddleRect.x > screenWidth // 2:
                 print("collided with p2")
+                self.rectangle.right = paddleRect.left
                 self.velocity.x *= -1
+            
+    # FOR DEBUGGING    
+    # def move(self, keylist:list, upkey, downkey, leftkey, rightkey):
+    #     if keylist[upkey]:
+    #         self.rectangle.y -= self.velocity.y
+    #     if keylist[downkey]:
+    #         self.rectangle.y += self.velocity.y
+    #     if keylist[leftkey]:
+    #         self.rectangle.x -= self.velocity.x
+    #     if keylist[rightkey]:
+    #         self.rectangle.x += self.velocity.x

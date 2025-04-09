@@ -35,13 +35,15 @@ while running:
     
     fps = clock.get_fps()
     fpsCounter = font.render(f"FPS: {fps:.2f} ",True,"cyan")
-    ballSpeed = font.render(f"Velocity: {ball.velocity}",True,"cyan")
+    ballSpeed = font.render(f"BVelocity: {ball.velocity}",True,"cyan")
+    paddleSpeed = font.render(f"PSpeed: {paddle1.speed:.2f}",True,"cyan")
     extra = font.render("SCORE",True,"cyan")
     score = font.render(f"{p1Score}:{p2Score}",True,"cyan")
 
     screen.fill('black')
     screen.blit(fpsCounter, (30,550))
     screen.blit(ballSpeed, (150,550))
+    screen.blit(paddleSpeed, (400,550))
     screen.blit(extra, ((width-extra.get_width())/2,30))
     screen.blit(score, ((width-score.get_width())/2,50))
     keys = pygame.key.get_pressed()
@@ -58,14 +60,29 @@ while running:
     ball.draw(screen)
     ball.update(width,height)
 
-    ball.move(keys, pygame.K_i, pygame.K_k, pygame.K_j, pygame.K_l)
-
     ball.checkPaddleCollision([paddle1.rectangle,paddle2.rectangle],width,height)
     whoGoal = ball.checkGoalCollision([goalP1Rect,goalP2Rect],width,height)
     if whoGoal == 1:
+        showScore = font.render("Player 1 Scored!",True,"cyan")
+        screen.blit(showScore,((width-showScore.get_width())/2,70))
         p1Score += 1
+        paddle1.speed = paddleP.speed
+        pygame.display.update()
+        pygame.time.delay(1000)
     if whoGoal == 2:
+        showScore = font.render("Player 2 Scored!",True,"cyan")
+        screen.blit(showScore,((width-showScore.get_width())/2,70))
         p2Score += 1
+        paddle2.speed = paddleP.speed
+        pygame.display.update()
+        pygame.time.delay(1000)
+
+    # scaling of game
+    if pygame.time.get_ticks() % 3000 < 20:
+        speed = ball.velocity.length()
+        ball.velocity = ball.velocity.normalize() * (speed + 0.8)
+        paddle1.speed += 0.4
+        paddle2.speed += 0.4
 
     pygame.display.update()
     clock.tick(60)

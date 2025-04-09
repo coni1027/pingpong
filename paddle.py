@@ -2,8 +2,11 @@ import pygame
 
 class Paddle:
     def __init__(self, x, y, width=15, height=90, color="cyan"):
+        self.x = x
+        self.y = y
         self.width = width
         self.height = height
+        self.color = color
         self.surface = pygame.Surface((width,height))
         self.rectangle = self.surface.get_rect(topleft=(x,y))
         self.surface.fill(color)
@@ -17,3 +20,4 @@ class Paddle:
 
     def draw(self, screen):
         screen.blit(self.surface,self.rectangle)
+    

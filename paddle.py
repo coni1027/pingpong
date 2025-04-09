@@ -10,7 +10,7 @@ class Paddle:
         self.surface = pygame.Surface((width,height))
         self.rectangle = self.surface.get_rect(topleft=(x,y))
         self.surface.fill(color)
-        self.speed = 5
+        self.speed = 8
 
     def move(self, keylist, upkey, downkey, screenHeight):
         if keylist[upkey] and self.rectangle.top > 0:
